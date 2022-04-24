@@ -1,10 +1,9 @@
 <script lang="ts">
     import Icons from "../components/Icons.svelte";
-    import {writable} from "svelte/store";
+    import { todoList, addTodo, removeTodo, todoToggleCompleted } from "../stores/todoStore.svelte";
     import { onMount } from "svelte";
 
     let newItem: string;
-    const todoList:any = writable([]);
 
     onMount(()=>{
         const todoinLocal = localStorage.getItem("todoList");
@@ -12,35 +11,15 @@
             todoList.update(() => JSON.parse(todoinLocal));
         }
     });
-
-    const addTodo = () =>{
-        if(newItem.trim() !== ""){
-            todoList.update((curr:any) => {
-                const newTodoList = [...curr, {todo: newItem, completed: false}];
-                return newTodoList;
-            });
-            newItem = "";
-        }
-        localStorage.setItem("todoList", JSON.stringify($todoList));
-    }
-
-    const removeTodo = (index:number) => {
-        todoList.update((curr:any) => curr.filter((el:any, indextodo:number) => indextodo != index));
-        localStorage.setItem("todoList", JSON.stringify($todoList));
-    }
-
-    const todoToggleCompleted = (index:number) => {
-        todoList.update((curr:any) =>{
-            curr[index].completed = !curr[index].completed;
-            return curr;
-        });
-        localStorage.setItem("todoList", JSON.stringify($todoList));
-    }
 </script>
 
 <main class="container">
+  <h2 class=" text-sky-500 font-bold text-2xl mb-5">Onur's Todo List</h2>
     <div>
-        <form on:submit|preventDefault={addTodo}>
+        <form on:submit|preventDefault={()=>{
+            addTodo(newItem);
+            if(newItem.trim() !== "") newItem = "";
+          }}>
           <input
             bind:value={newItem}
             type="text"
@@ -49,6 +28,7 @@
           />
           <button class="bg-sky-600 hover:bg-sky-500 transition-all px-4 py-2 rounded-md text-white font-bold shadow-md">+</button>
         </form>
+        <a class="text-gray-300 ml-2 hover:text-gray-100 transition-all duration-500" href="/todoCounter">See statistics!</a>
       </div>
 
     <ul class=" h-4/6 overflow-y-auto">
@@ -72,14 +52,16 @@
 </main>
 
 <style>
-    .container{
-        display:flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 100vw;
-        height: 100vh;
-        background: #172241 no-repeat;
-        background-size: cover;
-        padding-top: 10vh;
-    }
+  .container{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 100vw;
+      height: 100vh;
+      background: #172241 no-repeat;
+      background-size: cover;
+      padding-top: 2vh;
+      padding-left: 2vw;
+      padding-right: 2vw;
+  }
 </style>
