@@ -1,4 +1,5 @@
-# create-svelte
+# Svelte Todo App
+![image](https://user-images.githubusercontent.com/21128408/164773514-d2ca8f7b-e751-4aba-97be-a58ce9230d9e.png)
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
